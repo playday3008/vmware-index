@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@theme {
+	--color-vmw-bg: #1a1a2e;
+	--color-vmw-surface: #16213e;
+	--color-vmw-accent: #0097b2;
+	--color-vmw-accent-hover: #00c9db;
+	--color-vmw-text: #e0e0e0;
+	--color-vmw-text-muted: #9ca3af;
+	--color-vmw-error: #ef4444;
+	--color-vmw-success: #22c55e;
+	--color-vmw-border: #2a3a5c;
+}
