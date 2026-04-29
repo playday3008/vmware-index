@@ -170,4 +170,28 @@
 	{/if}
 
 	<FileList {files} {error} />
+
+	{#if selectedProductId}
+		<details class="bg-vmw-surface border-vmw-border rounded-md border text-sm">
+			<summary class="cursor-pointer px-4 py-3 font-semibold text-vmw-text-muted select-none">
+				What do Core, Packages, etc. mean?
+			</summary>
+			<div class="border-vmw-border space-y-2 border-t px-4 py-3 text-vmw-text-muted">
+				<dl class="space-y-1.5">
+					<div class="flex gap-2">
+						<dt class="font-medium text-vmw-text">Core</dt>
+						<dd>— Main application installer</dd>
+					</div>
+					<div class="flex gap-2">
+						<dt class="font-medium text-vmw-text">Packages</dt>
+						<dd>— Additional components (VMware Tools ISOs, guest OS drivers, etc.)</dd>
+					</div>
+					<div class="flex gap-2">
+						<dt class="font-medium text-vmw-text">Windows / Linux</dt>
+						<dd>— Host operating system the build targets</dd>
+					</div>
+				</dl>
+			</div>
+		</details>
+	{/if}
 </div>
