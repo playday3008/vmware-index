@@ -45,10 +45,9 @@ export const GET: RequestHandler = async ({ params }) => {
 		return json(response, { headers: CACHE_HEADERS });
 	} catch (e) {
 		if (e instanceof FetchError) {
-			return json(
-				{ error: 'All sources failed', attempts: e.attempts } satisfies ErrorResponse,
-				{ status: 502 }
-			);
+			return json({ error: 'All sources failed', attempts: e.attempts } satisfies ErrorResponse, {
+				status: 502
+			});
 		}
 		return json({ error: 'Internal server error' } satisfies ErrorResponse, { status: 500 });
 	}

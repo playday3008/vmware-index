@@ -29,7 +29,7 @@
 		</label>
 		{#if loadingVersions}
 			<div
-				class="bg-vmw-surface border-vmw-border mt-1 block w-full rounded-md border py-2.5 pl-3 text-vmw-text-muted shadow-sm"
+				class="mt-1 block w-full rounded-md border border-vmw-border bg-vmw-surface py-2.5 pl-3 text-vmw-text-muted shadow-sm"
 			>
 				Loading versions...
 			</div>
@@ -37,7 +37,7 @@
 			<select
 				id="version-select"
 				{disabled}
-				class="bg-vmw-surface border-vmw-border text-vmw-text focus:border-vmw-accent focus:ring-vmw-accent mt-1 block w-full rounded-md border py-2.5 pr-10 pl-3 text-base shadow-sm focus:outline-none sm:text-sm"
+				class="mt-1 block w-full rounded-md border border-vmw-border bg-vmw-surface py-2.5 pr-10 pl-3 text-base text-vmw-text shadow-sm focus:border-vmw-accent focus:ring-vmw-accent focus:outline-none sm:text-sm"
 				onchange={(e) => onchange(e.currentTarget.value)}
 			>
 				<option value="">-- Select a Version --</option>
@@ -52,7 +52,7 @@
 		type="button"
 		onclick={onsubmit}
 		disabled={disabled || loading || !value}
-		class="bg-vmw-accent hover:bg-vmw-accent-hover w-full rounded-md px-4 py-2.5 font-semibold text-white shadow-md focus:outline-none focus:ring-2 focus:ring-vmw-accent/60 disabled:cursor-not-allowed disabled:opacity-60"
+		class="w-full rounded-md bg-vmw-accent px-4 py-2.5 font-semibold text-white shadow-md hover:bg-vmw-accent-hover focus:ring-2 focus:ring-vmw-accent/60 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
 	>
 		{loading ? 'Fetching Details...' : 'Show Downloadable Files'}
 	</button>

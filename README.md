@@ -73,11 +73,11 @@ src/
 
 ## Data Sources
 
-| Source | URL Base | Timeout |
-|--------|----------|---------|
-| Broadcom | `softwareupdate-prod.broadcom.com/cds/vmw-desktop/` | 3s |
-| VMware | `softwareupdate.vmware.com/cds/vmw-desktop/` | 3s |
-| Wayback Machine | `web.archive.org/web/{timestamp}id_/` | 10s |
+| Source          | URL Base                                            | Timeout |
+| --------------- | --------------------------------------------------- | ------- |
+| Broadcom        | `softwareupdate-prod.broadcom.com/cds/vmw-desktop/` | 3s      |
+| VMware          | `softwareupdate.vmware.com/cds/vmw-desktop/`        | 3s      |
+| Wayback Machine | `web.archive.org/web/{timestamp}id_/`               | 10s     |
 
 The app tries each source in order. Currently, the live Broadcom/VMware servers return stripped XML (only `info-only` entries), so the Wayback Machine is the effective primary source.
 

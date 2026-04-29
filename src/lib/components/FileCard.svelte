@@ -23,12 +23,12 @@
 	}
 </script>
 
-<div class="bg-vmw-surface border-vmw-border rounded-md border p-4 shadow">
-	<p class="break-all font-medium text-vmw-text">{file.name}</p>
+<div class="rounded-md border border-vmw-border bg-vmw-surface p-4 shadow">
+	<p class="font-medium break-all text-vmw-text">{file.name}</p>
 
 	{#if file.checksumType && file.checksumValue}
 		<div class="mt-1 flex items-start gap-2">
-			<p class="min-w-0 flex-1 break-all text-xs text-vmw-text-muted">
+			<p class="min-w-0 flex-1 text-xs break-all text-vmw-text-muted">
 				{file.checksumType.toUpperCase()}: {file.checksumValue}
 			</p>
 			<button
@@ -48,7 +48,7 @@
 			href={file.waybackUrl}
 			target="_blank"
 			rel="noopener noreferrer"
-			class="bg-vmw-accent hover:bg-vmw-accent-hover inline-block rounded-md px-4 py-2 text-sm font-semibold text-white shadow transition-colors"
+			class="inline-block rounded-md bg-vmw-accent px-4 py-2 text-sm font-semibold text-white shadow transition-colors hover:bg-vmw-accent-hover"
 		>
 			Download (Wayback Machine)
 		</a>
@@ -57,7 +57,7 @@
 	<div class="mt-3">
 		<button
 			onclick={() => (curlExpanded = !curlExpanded)}
-			class="text-xs text-vmw-text-muted hover:text-vmw-accent transition-colors"
+			class="text-xs text-vmw-text-muted transition-colors hover:text-vmw-accent"
 		>
 			{curlExpanded ? '▾' : '▸'} CDN curl command
 		</button>
@@ -65,7 +65,7 @@
 		{#if curlExpanded}
 			<div class="mt-2 flex items-start gap-2">
 				<pre
-					class="bg-vmw-bg border-vmw-border min-w-0 flex-1 overflow-x-auto rounded border p-2 text-xs text-vmw-text">{file.curlCommand}</pre>
+					class="min-w-0 flex-1 overflow-x-auto rounded border border-vmw-border bg-vmw-bg p-2 text-xs text-vmw-text">{file.curlCommand}</pre>
 				<button
 					onclick={() => copyText(file.curlCommand, 'curl')}
 					class="shrink-0 rounded px-2 py-1 text-xs font-medium transition-colors

@@ -53,7 +53,13 @@ describe('fetchWithFallback', () => {
 			{ ok: false },
 			{ ok: false },
 			// CDX API call
-			{ ok: true, data: JSON.stringify([['a', 'b'], ['x', '20241003182329']]) },
+			{
+				ok: true,
+				data: JSON.stringify([
+					['a', 'b'],
+					['x', '20241003182329']
+				])
+			},
 			// Wayback fetch
 			{ ok: true, data: '<archived/>' }
 		]);
@@ -82,7 +88,10 @@ describe('fetchWithFallback', () => {
 			const text = new TextDecoder().decode(data);
 			return text.includes('good');
 		};
-		mockFetchSequence([{ ok: true, data: 'bad data' }, { ok: true, data: 'good data' }]);
+		mockFetchSequence([
+			{ ok: true, data: 'bad data' },
+			{ ok: true, data: 'good data' }
+		]);
 
 		const result = await fetchWithFallback('test.xml', validator);
 		expect(result.sourceName).toBe('VMware');

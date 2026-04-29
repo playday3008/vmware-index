@@ -11,8 +11,8 @@
 </script>
 
 {#if error}
-	<div class="bg-vmw-error/10 border-vmw-error mt-6 rounded-md border-l-4 p-4">
-		<p class="text-vmw-error text-sm">{error}</p>
+	<div class="mt-6 rounded-md border-l-4 border-vmw-error bg-vmw-error/10 p-4">
+		<p class="text-sm text-vmw-error">{error}</p>
 	</div>
 {:else if files.length > 0}
 	<div class="mt-6">

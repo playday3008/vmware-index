@@ -40,10 +40,9 @@ export const GET: RequestHandler = async ({ params, url }) => {
 			const decompressed = pako.ungzip(new Uint8Array(result.data));
 			xmlText = new TextDecoder().decode(decompressed);
 		} catch {
-			return json(
-				{ error: 'Failed to decompress metadata' } satisfies ErrorResponse,
-				{ status: 500 }
-			);
+			return json({ error: 'Failed to decompress metadata' } satisfies ErrorResponse, {
+				status: 500
+			});
 		}
 
 		const pathParts = gzPath.split('/');
@@ -67,10 +66,9 @@ export const GET: RequestHandler = async ({ params, url }) => {
 		return json(response, { headers: CACHE_HEADERS });
 	} catch (e) {
 		if (e instanceof FetchError) {
-			return json(
-				{ error: 'All sources failed', attempts: e.attempts } satisfies ErrorResponse,
-				{ status: 502 }
-			);
+			return json({ error: 'All sources failed', attempts: e.attempts } satisfies ErrorResponse, {
+				status: 502
+			});
 		}
 		return json({ error: 'Internal server error' } satisfies ErrorResponse, { status: 500 });
 	}

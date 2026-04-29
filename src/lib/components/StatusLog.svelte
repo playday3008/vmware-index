@@ -55,7 +55,7 @@
 
 {#if entries.length > 0}
 	<div
-		class="bg-vmw-surface border-vmw-border mb-4 max-h-40 overflow-y-auto rounded-md border p-3 font-mono text-xs"
+		class="mb-4 max-h-40 overflow-y-auto rounded-md border border-vmw-border bg-vmw-surface p-3 font-mono text-xs"
 	>
 		{#each entries as entry (entry.time + entry.message)}
 			<div class="py-0.5">
@@ -74,7 +74,7 @@
 		{#if loading}
 			<div class="py-0.5">
 				<span class="text-vmw-text-muted">[...]</span>
-				<span class="text-vmw-text-muted animate-pulse">Working...</span>
+				<span class="animate-pulse text-vmw-text-muted">Working...</span>
 			</div>
 		{/if}
 	</div>

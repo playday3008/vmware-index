@@ -132,7 +132,7 @@
 		loading={loadingVersions}
 	/>
 
-	<div class="bg-vmw-surface border-vmw-border rounded-xl border p-6 shadow-lg sm:p-8">
+	<div class="rounded-xl border border-vmw-border bg-vmw-surface p-6 shadow-lg sm:p-8">
 		<div class="space-y-6">
 			<ProductSelector
 				products={productList}
@@ -153,7 +153,7 @@
 					}}
 					onsubmit={onShowFiles}
 					loading={loadingFiles}
-					loadingVersions={loadingVersions}
+					{loadingVersions}
 					disabled={loadingVersions || loadingFiles}
 				/>
 			{/if}
@@ -172,11 +172,11 @@
 	<FileList {files} {error} />
 
 	{#if selectedProductId}
-		<details class="bg-vmw-surface border-vmw-border rounded-md border text-sm">
+		<details class="rounded-md border border-vmw-border bg-vmw-surface text-sm">
 			<summary class="cursor-pointer px-4 py-3 font-semibold text-vmw-text-muted select-none">
 				What do Core, Packages, etc. mean?
 			</summary>
-			<div class="border-vmw-border space-y-2 border-t px-4 py-3 text-vmw-text-muted">
+			<div class="space-y-2 border-t border-vmw-border px-4 py-3 text-vmw-text-muted">
 				<dl class="space-y-1.5">
 					<div class="flex gap-2">
 						<dt class="font-medium text-vmw-text">Core</dt>
