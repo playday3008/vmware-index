@@ -5,12 +5,13 @@ const parser = new XMLParser({
 	ignoreAttributes: false,
 	attributeNamePrefix: '@_',
 	textNodeName: '#text',
-	isArray: (_name: string, jpath: string) => {
+	isArray: (_name, jpath) => {
+		const jp = String(jpath);
 		return [
 			'metaList.metadata',
 			'metadataResponse.bulletin',
 			'bulletin.componentList.component'
-		].some((p) => jpath.endsWith(p));
+		].some((p) => jp.endsWith(p));
 	}
 });
 

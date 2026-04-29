@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { fetchWithFallback, FetchError } from './sources';
 import { clear } from './cache';
 
-function mockFetchSequence(responses: Array<{ ok: boolean; data?: string; error?: boolean }>) {
+function mockFetchSequence(responses: Array<{ ok?: boolean; data?: string; error?: boolean }>) {
 	let callIndex = 0;
 	vi.stubGlobal(
 		'fetch',
