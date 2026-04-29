@@ -1,42 +1,86 @@
-# sv
+# VMware Product Download Index
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A web app that indexes VMware product downloads by fetching XML metadata from Broadcom/VMware update servers, with Wayback Machine as a fallback source.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- **10 VMware products** — Workstation Pro, Fusion Pro, Player, Remote Console (all platforms)
+- **3-source fallback chain** — Broadcom → VMware → Wayback Machine
+- **Verbose status logging** — See which sources were tried and how long each took
+- **Download links** — Wayback Machine download URLs and CDN curl commands with checksums
+- **Dark VMware-themed UI** — Tailwind CSS dark theme
 
-```sh
-# create a new project
-npx sv create my-app
+## How It Works
+
+1. Select a product from the dropdown
+2. The app fetches the product XML from Broadcom's update server, falling back to VMware's server, then to the Wayback Machine
+3. Select a version/build from the populated list
+4. Click "Show Downloadable Files" to fetch and decompress the metadata XML
+5. Download files via Wayback Machine links or use the CDN curl commands
+
+### Version Qualifiers
+
+- **Core** — Main application installer
+- **Packages** — Additional components (VMware Tools ISOs, guest OS drivers, etc.)
+- **Windows / Linux** — Host operating system the build targets
+
+## Tech Stack
+
+- [SvelteKit](https://svelte.dev/) (Svelte 5, runes mode)
+- [Tailwind CSS](https://tailwindcss.com/) v4
+- [Cloudflare Workers](https://workers.cloudflare.com/) deployment
+- [fast-xml-parser](https://github.com/NaturalIntelligence/fast-xml-parser) for XML parsing
+- [pako](https://github.com/nodeca/pako) for gzip decompression
+
+## Development
+
+```bash
+# Install dependencies
+bun install
+
+# Start dev server
+bun run dev
+
+# Type check
+bun run check
+
+# Run tests
+bun run test:unit
+
+# Build for production
+bun run build
+
+# Deploy to Cloudflare Workers
+bun run deploy
 ```
 
-To recreate this project with the same configuration:
+## Project Structure
 
-```sh
-# recreate this project
-bun x sv@0.15.1 create --template minimal --types ts --add prettier eslint vitest="usages:unit,component" playwright tailwindcss="plugins:typography,forms" sveltekit-adapter="adapter:auto" mcp="ide:other+setup:remote" --install bun vmware-index
+```
+src/
+├── lib/
+│   ├── components/       # Svelte 5 UI components
+│   ├── server/           # Server-only modules (cache, XML parser, fetcher)
+│   ├── types.ts          # Shared TypeScript interfaces
+│   └── products.ts       # Product config (shared client/server)
+├── routes/
+│   ├── api/products/     # REST API endpoints
+│   ├── +layout.svelte    # App shell (header, footer, dark theme)
+│   └── +page.svelte      # Main page orchestrator
+├── app.css               # Tailwind config + theme variables
+└── app.html              # HTML shell
 ```
 
-## Developing
+## Data Sources
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+| Source | URL Base | Timeout |
+|--------|----------|---------|
+| Broadcom | `softwareupdate-prod.broadcom.com/cds/vmw-desktop/` | 3s |
+| VMware | `softwareupdate.vmware.com/cds/vmw-desktop/` | 3s |
+| Wayback Machine | `web.archive.org/web/{timestamp}id_/` | 10s |
 
-```sh
-npm run dev
+The app tries each source in order. Currently, the live Broadcom/VMware servers return stripped XML (only `info-only` entries), so the Wayback Machine is the effective primary source.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## License
 
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Not affiliated with VMware or Broadcom.
