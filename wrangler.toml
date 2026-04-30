@@ -33,6 +33,10 @@ head_sampling_rate = 1
 [placement]
 mode = "smart"
 
+[[routes]]
+pattern = "vmware-index.playday3008.dev"
+custom_domain = true
+
 # Bindings
 # Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
 # databases, object storage, AI inference, real-time communication and more.
