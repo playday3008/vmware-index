@@ -51,7 +51,7 @@
 		"wrangler": "^4.86.0"
 	},
 	"dependencies": {
-		"fast-xml-parser": "^5.7.2",
+		"fast-xml-parser": "^5.7.3",
 		"pako": "^2.1.0"
 	}
 }
