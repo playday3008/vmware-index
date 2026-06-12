@@ -14,32 +14,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: ./.github/actions/setup-bun-env
+      - uses: ./.github/actions/setup-deno-env
 
-      - run: bun install --frozen-lockfile
-      - run: bun run prepare
-      - run: bun run lint
-      - run: bun run check
+      - run: deno install --frozen
+      - run: deno task prepare
+      - run: deno task lint
+      - run: deno task check
 
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: ./.github/actions/setup-bun-env
+      - uses: ./.github/actions/setup-deno-env
 
-      - run: bun install --frozen-lockfile
-      - run: bunx playwright install --with-deps chromium
-      - run: bun run prepare
-      - run: bun run test:unit -- --run
+      - run: deno install --frozen
+      - run: deno x npm:playwright install --with-deps chromium
+      - run: deno task prepare
+      - run: deno task test:unit -- --run
 
 #  e2e-tests:
 #    name: E2E Tests
 #    runs-on: ubuntu-latest
 #    steps:
 #      - uses: actions/checkout@v6
-#      - uses: ./.github/actions/setup-bun-env
+#      - uses: ./.github/actions/setup-deno-env
 #
-#      - run: bun install --frozen-lockfile
-#      - run: bunx playwright install --with-deps chromium
-#      - run: bunx playwright test
+#      - run: deno install --frozen
+#      - run: deno x npm:playwright install --with-deps chromium
+#      - run: deno x npm:playwright test

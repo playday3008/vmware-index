@@ -8,7 +8,7 @@ VMware Product Download Index — a SvelteKit app that indexes VMware product do
 - **Language**: TypeScript (strict)
 - **Styling**: Tailwind CSS v4 with `@theme` custom properties (dark VMware theme)
 - **Deployment**: Cloudflare Workers (`@sveltejs/adapter-cloudflare`)
-- **Package Manager**: bun
+- **Package Manager**: deno
 - **Testing**: vitest (unit, server project), playwright (e2e)
 - **Dependencies**: fast-xml-parser, pako (gzip decompression)
 
@@ -43,13 +43,13 @@ VMware Product Download Index — a SvelteKit app that indexes VMware product do
 ## Commands
 
 ```bash
-bun run dev          # Start dev server
-bun run build        # Build for Cloudflare Workers
-bun run check        # Type check (svelte-kit sync + svelte-check)
-bun run test:unit    # Run vitest
-bun run lint         # Prettier + ESLint check
-bun run format       # Prettier format
-bun run deploy       # Build + wrangler deploy
+deno task dev          # Start dev server
+deno task build        # Build for Cloudflare Workers
+deno task check        # Type check (svelte-kit sync + svelte-check)
+deno task test:unit    # Run vitest
+deno task lint         # Prettier + ESLint check
+deno task format       # Prettier format
+deno task deploy       # Build + wrangler deploy
 ```
 
 ## Testing
@@ -57,7 +57,7 @@ bun run deploy       # Build + wrangler deploy
 Server tests use vitest with `--project server`. Run individual test files:
 
 ```bash
-bun run test:unit -- --project server src/lib/server/cache.test.ts
+deno task test:unit -- --project server src/lib/server/cache.test.ts
 ```
 
 ## Key Constants

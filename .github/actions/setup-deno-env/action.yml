@@ -1,0 +1,20 @@
+name: Setup Deno Environment
+description: Install Node 22, Deno, and restore dependency cache
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v6
+      with:
+        node-version: 22
+
+    - uses: denoland/setup-deno@v2
+      with:
+        deno-version: v2.x
+
+    - uses: actions/cache@v5
+      with:
+        path: |
+          ~/.cache/deno
+        key: deno-${{ runner.os }}-${{ hashFiles('deno.lock') }}
+        restore-keys: deno-${{ runner.os }}-

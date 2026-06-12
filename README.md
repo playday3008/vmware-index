@@ -36,22 +36,22 @@ A web app that indexes VMware product downloads by fetching XML metadata from Br
 
 ```bash
 # Install dependencies
-bun install
+deno install
 
 # Start dev server
-bun run dev
+deno task dev
 
 # Type check
-bun run check
+deno task check
 
 # Run tests
-bun run test:unit
+deno task test:unit
 
 # Build for production
-bun run build
+deno task build
 
 # Deploy to Cloudflare Workers
-bun run deploy
+deno task deploy
 ```
 
 ## Project Structure
