@@ -6,7 +6,29 @@
 </script>
 
 <svelte:head>
+	<title>VMware Product Download Index</title>
+	<meta
+		name="description"
+		content="Browse and download VMware Workstation Pro, Fusion Pro, Player, and Remote Console builds. Sources: Broadcom, VMware, and Wayback Machine archives."
+	/>
+	<link rel="canonical" href="https://vmware-index.playday3008.dev" />
 	<link rel="icon" href={favicon} />
+
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://vmware-index.playday3008.dev" />
+	<meta property="og:title" content="VMware Product Download Index" />
+	<meta
+		property="og:description"
+		content="Browse and download VMware Workstation Pro, Fusion Pro, Player, and Remote Console builds. Sources: Broadcom, VMware, and Wayback Machine archives."
+	/>
+	<meta property="og:site_name" content="VMware Product Download Index" />
+
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content="VMware Product Download Index" />
+	<meta
+		name="twitter:description"
+		content="Browse and download VMware Workstation Pro, Fusion Pro, Player, and Remote Console builds. Sources: Broadcom, VMware, and Wayback Machine archives."
+	/>
 </svelte:head>
 
 <div class="mx-auto flex min-h-screen max-w-4xl flex-col px-4 py-8 sm:px-8">
