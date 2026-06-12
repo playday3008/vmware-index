@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import GitHubCorner from '$lib/components/GitHubCorner.svelte';
 
 	let { children } = $props();
 </script>
@@ -30,6 +31,8 @@
 		content="Browse and download VMware Workstation Pro, Fusion Pro, Player, and Remote Console builds. Sources: Broadcom, VMware, and Wayback Machine archives."
 	/>
 </svelte:head>
+
+<GitHubCorner href="https://github.com/playday3008/vmware-index" />
 
 <div class="mx-auto flex min-h-screen max-w-4xl flex-col px-4 py-8 sm:px-8">
 	<header class="mb-10 text-center">
