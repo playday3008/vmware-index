@@ -13,7 +13,7 @@ jobs:
     name: Lint & Type Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-deno-env
 
       - run: deno install --frozen
@@ -25,7 +25,7 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-deno-env
 
       - run: deno install --frozen
@@ -37,7 +37,7 @@ jobs:
 #    name: E2E Tests
 #    runs-on: ubuntu-latest
 #    steps:
-#      - uses: actions/checkout@v6
+#      - uses: actions/checkout@v7
 #      - uses: ./.github/actions/setup-deno-env
 #
 #      - run: deno install --frozen
