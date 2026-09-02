@@ -1,4 +1,4 @@
-import { resolveTimestamp } from './cdx';
+import { resolveTimestamps } from './cdx';
 import type { SourceAttempt } from '../types';
 
 const SOURCES = [
@@ -49,21 +49,23 @@ export async function fetchWithFallback(
 	}
 
 	const start = Date.now();
-	try {
-		const fullUrl = `${WAYBACK_ORIGINAL_BASE}${path}`;
-		const timestamp = await resolveTimestamp(fullUrl, cdxCategory);
-		const waybackUrl = `${WAYBACK_BASE}${timestamp}id_/${fullUrl}`;
-		const response = await fetch(waybackUrl, {
-			signal: AbortSignal.timeout(WAYBACK_TIMEOUT)
-		});
-		if (!response.ok) throw new Error(`HTTP ${response.status}`);
-		const data = await response.arrayBuffer();
-		if (validate && !validate(data)) throw new Error('Validation failed');
-		attempts.push({ name: 'Wayback Machine', status: 'success', ms: Date.now() - start });
-		return { data, sourceName: 'Wayback Machine', timestamp, attempts };
-	} catch {
-		attempts.push({ name: 'Wayback Machine', status: 'failed', ms: Date.now() - start });
+	const fullUrl = `${WAYBACK_ORIGINAL_BASE}${path}`;
+	for (const timestamp of await resolveTimestamps(fullUrl, cdxCategory)) {
+		try {
+			const waybackUrl = `${WAYBACK_BASE}${timestamp}id_/${fullUrl}`;
+			const response = await fetch(waybackUrl, {
+				signal: AbortSignal.timeout(WAYBACK_TIMEOUT)
+			});
+			if (!response.ok) throw new Error(`HTTP ${response.status}`);
+			const data = await response.arrayBuffer();
+			if (validate && !validate(data)) throw new Error('Validation failed');
+			attempts.push({ name: 'Wayback Machine', status: 'success', ms: Date.now() - start });
+			return { data, sourceName: 'Wayback Machine', timestamp, attempts };
+		} catch {
+			continue;
+		}
 	}
+	attempts.push({ name: 'Wayback Machine', status: 'failed', ms: Date.now() - start });
 
 	throw new FetchError('All sources failed', attempts);
 }

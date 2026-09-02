@@ -13,7 +13,8 @@ function mockFetchSequence(responses: Array<{ ok?: boolean; data?: string; error
 			return Promise.resolve({
 				ok: resp.ok,
 				status: resp.ok ? 200 : 500,
-				arrayBuffer: () => Promise.resolve(new TextEncoder().encode(resp.data ?? '').buffer)
+				arrayBuffer: () => Promise.resolve(new TextEncoder().encode(resp.data ?? '').buffer),
+				json: () => Promise.resolve(JSON.parse(resp.data ?? 'null'))
 			});
 		})
 	);
@@ -81,6 +82,52 @@ describe('fetchWithFallback', () => {
 			expect((e as FetchError).attempts).toHaveLength(3);
 			expect((e as FetchError).attempts.every((a) => a.status === 'failed')).toBe(true);
 		}
+	});
+
+	it('skips Wayback snapshots that fail validation and uses the next one', async () => {
+		const validator = (data: ArrayBuffer) => new TextDecoder().decode(data).includes('good');
+		mockFetchSequence([
+			{ ok: true, data: 'bad live' },
+			{ ok: true, data: 'bad live' },
+			// CDX API call
+			{
+				ok: true,
+				data: JSON.stringify([
+					['urlkey', 'timestamp'],
+					['x', '20241003182329'],
+					['x', '20250221215224']
+				])
+			},
+			// newest snapshot: stub with no usable content
+			{ ok: true, data: 'bad archived' },
+			// next-newest snapshot: real content
+			{ ok: true, data: 'good archived' }
+		]);
+
+		const result = await fetchWithFallback('ws-windows.xml', validator);
+		expect(result.sourceName).toBe('Wayback Machine');
+		expect(result.timestamp).toBe('20241003182329');
+		expect(result.attempts).toHaveLength(3);
+		expect(result.attempts[2].status).toBe('success');
+	});
+
+	it('throws FetchError when every Wayback snapshot fails validation', async () => {
+		const validator = (data: ArrayBuffer) => new TextDecoder().decode(data).includes('good');
+		mockFetchSequence([
+			{ ok: true, data: 'bad live' },
+			{ ok: true, data: 'bad live' },
+			{
+				ok: true,
+				data: JSON.stringify([
+					['urlkey', 'timestamp'],
+					['x', '20241003182329'],
+					['x', '20250221215224']
+				])
+			},
+			{ ok: true, data: 'bad archived' }
+		]);
+
+		await expect(fetchWithFallback('ws-windows.xml', validator)).rejects.toBeInstanceOf(FetchError);
 	});
 
 	it('rejects source when validation fails and tries next', async () => {
