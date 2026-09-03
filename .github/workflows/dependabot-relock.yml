@@ -1,0 +1,44 @@
+name: Relock Deno
+
+# Dependabot updates package.json only; deno.lock must be regenerated in the
+# same PR or the frozen install in CI fails.
+on:
+  pull_request_target:
+    branches: [main]
+    paths:
+      - package.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: relock-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  relock:
+    name: Regenerate deno.lock
+    if: github.actor == 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - run: deno install
+
+      - name: Commit deno.lock
+        run: |
+          if git diff --quiet -- deno.lock; then
+            echo "deno.lock already up to date"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add deno.lock
+          git commit -m "chore: update deno.lock"
+          git push
