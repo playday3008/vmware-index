@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import pako from 'pako';
+import * as pako from 'pako';
 import * as cache from '$lib/server/cache';
 import { fetchWithFallback, FetchError } from '$lib/server/sources';
 import { parseMetadataXml } from '$lib/server/xml-parser';
