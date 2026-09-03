@@ -12,14 +12,13 @@
     "npm:@tailwindcss/typography@~0.5.20": "0.5.20_tailwindcss@4.3.0",
     "npm:@tailwindcss/vite@^4.3.0": "4.3.0_vite@8.0.16__@types+node@25.9.3_@types+node@25.9.3",
     "npm:@types/node@^25.9.2": "25.9.3",
-    "npm:@types/pako@^2.0.4": "2.0.4",
     "npm:@vitest/browser-playwright@^4.1.8": "4.1.8_playwright@1.60.0_vitest@4.1.8_@types+node@25.9.3_vite@8.0.16__@types+node@25.9.3",
     "npm:eslint-config-prettier@^10.1.8": "10.1.8_eslint@10.4.1",
     "npm:eslint-plugin-svelte@^3.19.0": "3.19.0_eslint@10.4.1_svelte@5.56.3",
     "npm:eslint@^10.4.1": "10.4.1",
     "npm:fast-xml-parser@^5.8.0": "5.8.0",
     "npm:globals@^17.6.0": "17.6.0",
-    "npm:pako@^2.1.0": "2.1.0",
+    "npm:pako@^3.0.1": "3.0.1",
     "npm:playwright@^1.60.0": "1.60.0",
     "npm:prettier-plugin-svelte@^4.1.0": "4.1.0_prettier@3.8.4_svelte@5.56.3",
     "npm:prettier-plugin-tailwindcss@0.8": "0.8.0_prettier@3.8.4_prettier-plugin-svelte@4.1.0__prettier@3.8.4__svelte@5.56.3_svelte@5.56.3",
@@ -848,9 +847,6 @@
         "undici-types"
       ]
     },
-    "@types/pako@2.0.4": {
-      "integrity": "sha512-VWDCbrLeVXJM9fihYodcLiIv0ku+AlOa/TQ1SvYOaBuyrSKgEcro95LJyIsJ4vSo6BXIxOKxiJAat04CmST9Fw=="
-    },
     "@types/trusted-types@2.0.7": {
       "integrity": "sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw=="
     },
@@ -1614,8 +1610,8 @@
         "p-limit"
       ]
     },
-    "pako@2.1.0": {
-      "integrity": "sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug=="
+    "pako@3.0.1": {
+      "integrity": "sha512-GupotUUI0mlhugKjUs4bjOwLt3nrehy9Ys2dxC0GtgVef5cnKggkDMmf2bq2poCCuVXopWPmqsc9VDT2iJUy+w=="
     },
     "path-exists@4.0.0": {
       "integrity": "sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w=="
@@ -2143,14 +2139,13 @@
         "npm:@tailwindcss/typography@~0.5.20",
         "npm:@tailwindcss/vite@^4.3.0",
         "npm:@types/node@^25.9.2",
-        "npm:@types/pako@^2.0.4",
         "npm:@vitest/browser-playwright@^4.1.8",
         "npm:eslint-config-prettier@^10.1.8",
         "npm:eslint-plugin-svelte@^3.19.0",
         "npm:eslint@^10.4.1",
         "npm:fast-xml-parser@^5.8.0",
         "npm:globals@^17.6.0",
-        "npm:pako@^2.1.0",
+        "npm:pako@^3.0.1",
         "npm:playwright@^1.60.0",
         "npm:prettier-plugin-svelte@^4.1.0",
         "npm:prettier-plugin-tailwindcss@0.8",
