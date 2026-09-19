@@ -9,7 +9,37 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+    # Packages below are peer-pinned to each other, several exactly, so a major
+    # split across separate PRs can never pass CI. A package joins the first
+    # group it matches, so order is significant.
     groups:
+      vitest:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
+          - 'vitest-browser-svelte'
+      playwright:
+        patterns:
+          - 'playwright'
+          - '@playwright/*'
+      svelte:
+        patterns:
+          - 'svelte'
+          - 'svelte-check'
+          - '@sveltejs/*'
+          - 'prettier-plugin-svelte'
+          - 'eslint-plugin-svelte'
+      eslint:
+        patterns:
+          - 'eslint'
+          - '@eslint/*'
+          - 'typescript-eslint'
+          - 'eslint-config-prettier'
+      tailwind:
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/*'
+          - 'prettier-plugin-tailwindcss'
       minor-and-patch:
         update-types:
           - 'minor'
