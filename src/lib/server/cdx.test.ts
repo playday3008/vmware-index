@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { resolveTimestamp, resolveTimestamps } from './cdx';
+import { archiveFetch, resolveTimestamp, resolveTimestamps } from './cdx';
 import { clear } from './cache';
 
 const WS_WINDOWS_URL = 'https://softwareupdate.vmware.com/cds/vmw-desktop/ws-windows.xml';
@@ -104,5 +104,39 @@ describe('resolveTimestamp', () => {
 	it('returns the fallback when the CDX API fails', async () => {
 		vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network error')));
 		expect(await resolveTimestamp(GZ_URL, 'metadata-gz')).toBe('20240910091207');
+	});
+});
+
+describe('archiveFetch', () => {
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
+	it('identifies itself and caches only successful responses', async () => {
+		const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 200 });
+		vi.stubGlobal('fetch', fetchMock);
+
+		await archiveFetch('https://web.archive.org/x', 1000, 60);
+
+		const init = fetchMock.mock.calls[0][1];
+		expect(init.headers['User-Agent']).toMatch(/vmware-index/);
+		expect(init.cf).toEqual({ cacheEverything: true, cacheTtlByStatus: { '200-299': 60 } });
+	});
+
+	it('retries once after a 429', async () => {
+		const fetchMock = vi
+			.fn()
+			.mockResolvedValueOnce({
+				ok: false,
+				status: 429,
+				headers: new Headers({ 'Retry-After': '0' })
+			})
+			.mockResolvedValueOnce({ ok: true, status: 200 });
+		vi.stubGlobal('fetch', fetchMock);
+
+		const response = await archiveFetch('https://web.archive.org/x', 1000, 60);
+
+		expect(response.status).toBe(200);
+		expect(fetchMock).toHaveBeenCalledTimes(2);
 	});
 });

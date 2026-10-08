@@ -8,6 +8,7 @@ export interface SourceAttempt {
 	name: string;
 	status: 'success' | 'failed';
 	ms: number;
+	error?: string;
 }
 
 export interface SourceInfo {

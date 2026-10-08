@@ -84,6 +84,21 @@ describe('fetchWithFallback', () => {
 		}
 	});
 
+	it('records why each source failed', async () => {
+		mockFetchSequence([{ error: true }, { ok: false }, { ok: false }]);
+
+		try {
+			await fetchWithFallback('ws-windows.xml');
+			expect.unreachable('should have thrown');
+		} catch (e) {
+			expect((e as FetchError).attempts.map((a) => a.error)).toEqual([
+				'network error',
+				'HTTP 500',
+				'HTTP 500'
+			]);
+		}
+	});
+
 	it('skips Wayback snapshots that fail validation and uses the next one', async () => {
 		const validator = (data: ArrayBuffer) => new TextDecoder().decode(data).includes('good');
 		mockFetchSequence([

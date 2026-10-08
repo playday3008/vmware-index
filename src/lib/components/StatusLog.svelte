@@ -36,7 +36,12 @@
 
 		for (const attempt of attempts) {
 			const offsetFromEnd = totalMs - cumulativeMs;
-			const statusText = attempt.status === 'success' ? 'success' : 'failed';
+			const statusText =
+				attempt.status === 'success'
+					? 'success'
+					: attempt.error
+						? `failed: ${attempt.error}`
+						: 'failed';
 			logs.push({
 				time: fmt(offsetFromEnd),
 				message: `Trying ${attempt.name}... ${statusText} (${(attempt.ms / 1000).toFixed(1)}s)`,

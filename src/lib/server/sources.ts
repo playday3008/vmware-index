@@ -1,4 +1,4 @@
-import { resolveTimestamps } from './cdx';
+import { archiveFetch, resolveTimestamps } from './cdx';
 import type { SourceAttempt } from '../types';
 
 const SOURCES = [
@@ -17,6 +17,8 @@ const SOURCES = [
 const WAYBACK_BASE = 'https://web.archive.org/web/';
 const WAYBACK_ORIGINAL_BASE = 'https://softwareupdate.vmware.com/cds/vmw-desktop/';
 const WAYBACK_TIMEOUT = 10000;
+// Snapshots are immutable.
+const WAYBACK_CACHE_TTL = 30 * 86400;
 
 export interface FetchResult {
 	data: ArrayBuffer;
@@ -43,31 +45,44 @@ export async function fetchWithFallback(
 			if (validate && !validate(data)) throw new Error('Validation failed');
 			attempts.push({ name: source.name, status: 'success', ms: Date.now() - start });
 			return { data, sourceName: source.name, attempts };
-		} catch {
-			attempts.push({ name: source.name, status: 'failed', ms: Date.now() - start });
+		} catch (e) {
+			attempts.push({
+				name: source.name,
+				status: 'failed',
+				ms: Date.now() - start,
+				error: errorMessage(e)
+			});
 		}
 	}
 
 	const start = Date.now();
 	const fullUrl = `${WAYBACK_ORIGINAL_BASE}${path}`;
+	let lastError: string | undefined;
 	for (const timestamp of await resolveTimestamps(fullUrl, cdxCategory)) {
 		try {
 			const waybackUrl = `${WAYBACK_BASE}${timestamp}id_/${fullUrl}`;
-			const response = await fetch(waybackUrl, {
-				signal: AbortSignal.timeout(WAYBACK_TIMEOUT)
-			});
+			const response = await archiveFetch(waybackUrl, WAYBACK_TIMEOUT, WAYBACK_CACHE_TTL);
 			if (!response.ok) throw new Error(`HTTP ${response.status}`);
 			const data = await response.arrayBuffer();
 			if (validate && !validate(data)) throw new Error('Validation failed');
 			attempts.push({ name: 'Wayback Machine', status: 'success', ms: Date.now() - start });
 			return { data, sourceName: 'Wayback Machine', timestamp, attempts };
-		} catch {
-			continue;
+		} catch (e) {
+			lastError = errorMessage(e);
 		}
 	}
-	attempts.push({ name: 'Wayback Machine', status: 'failed', ms: Date.now() - start });
+	attempts.push({
+		name: 'Wayback Machine',
+		status: 'failed',
+		ms: Date.now() - start,
+		error: lastError
+	});
 
 	throw new FetchError('All sources failed', attempts);
+}
+
+function errorMessage(e: unknown): string {
+	return e instanceof Error ? e.message : String(e);
 }
 
 export class FetchError extends Error {
