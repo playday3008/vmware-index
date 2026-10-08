@@ -43,13 +43,19 @@ export async function fetchWithFallback(
 			if (validate && !validate(data)) throw new Error('Validation failed');
 			attempts.push({ name: source.name, status: 'success', ms: Date.now() - start });
 			return { data, sourceName: source.name, attempts };
-		} catch {
-			attempts.push({ name: source.name, status: 'failed', ms: Date.now() - start });
+		} catch (e) {
+			attempts.push({
+				name: source.name,
+				status: 'failed',
+				ms: Date.now() - start,
+				error: errorMessage(e)
+			});
 		}
 	}
 
 	const start = Date.now();
 	const fullUrl = `${WAYBACK_ORIGINAL_BASE}${path}`;
+	let lastError: string | undefined;
 	for (const timestamp of await resolveTimestamps(fullUrl, cdxCategory)) {
 		try {
 			const waybackUrl = `${WAYBACK_BASE}${timestamp}id_/${fullUrl}`;
@@ -61,13 +67,22 @@ export async function fetchWithFallback(
 			if (validate && !validate(data)) throw new Error('Validation failed');
 			attempts.push({ name: 'Wayback Machine', status: 'success', ms: Date.now() - start });
 			return { data, sourceName: 'Wayback Machine', timestamp, attempts };
-		} catch {
-			continue;
+		} catch (e) {
+			lastError = errorMessage(e);
 		}
 	}
-	attempts.push({ name: 'Wayback Machine', status: 'failed', ms: Date.now() - start });
+	attempts.push({
+		name: 'Wayback Machine',
+		status: 'failed',
+		ms: Date.now() - start,
+		error: lastError
+	});
 
 	throw new FetchError('All sources failed', attempts);
+}
+
+function errorMessage(e: unknown): string {
+	return e instanceof Error ? e.message : String(e);
 }
 
 export class FetchError extends Error {
