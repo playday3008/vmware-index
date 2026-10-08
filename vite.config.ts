@@ -4,6 +4,17 @@ import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
 import { sveltekit } from '@sveltejs/kit/vite';
 
+// ponytail: Deno exposes a getter-only `caches` global, but adapter-cloudflare 8
+// assigns `globalThis.caches` when starting the dev/test server. Make it writable.
+// Remove once the adapter uses defineProperty or Deno allows the assignment.
+if (!Object.getOwnPropertyDescriptor(globalThis, 'caches')?.set) {
+	Object.defineProperty(globalThis, 'caches', {
+		value: globalThis.caches,
+		writable: true,
+		configurable: true
+	});
+}
+
 export default defineConfig({
 	plugins: [
 		tailwindcss(),
