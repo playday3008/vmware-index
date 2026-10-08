@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { products } from '$lib/products';
+	import { products } from '#lib/products.js';
 	import type {
 		ProductConfig,
 		VersionEntry,
@@ -8,11 +8,11 @@
 		VersionsResponse,
 		FilesResponse,
 		ErrorResponse
-	} from '$lib/types';
-	import ProductSelector from '$lib/components/ProductSelector.svelte';
-	import VersionSelector from '$lib/components/VersionSelector.svelte';
-	import StatusLog from '$lib/components/StatusLog.svelte';
-	import FileList from '$lib/components/FileList.svelte';
+	} from '#lib/types.js';
+	import ProductSelector from '#lib/components/ProductSelector.svelte';
+	import VersionSelector from '#lib/components/VersionSelector.svelte';
+	import StatusLog from '#lib/components/StatusLog.svelte';
+	import FileList from '#lib/components/FileList.svelte';
 
 	let selectedProductId = $state('');
 	let selectedVersionId = $state('');
