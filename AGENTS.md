@@ -4,7 +4,7 @@ VMware Product Download Index — a SvelteKit app that indexes VMware product do
 
 ## Tech Stack
 
-- **Framework**: SvelteKit (Svelte 5, runes mode)
+- **Framework**: SvelteKit 3 (Svelte 5, runes mode). Config lives in `sveltekit({...})` in `vite.config.ts`; imports use `#lib/*.js`
 - **Language**: TypeScript (strict)
 - **Styling**: Tailwind CSS v4 with `@theme` custom properties (dark VMware theme)
 - **Deployment**: Cloudflare Workers (`@sveltejs/adapter-cloudflare`)
@@ -19,7 +19,7 @@ VMware Product Download Index — a SvelteKit app that indexes VMware product do
 - `cache.ts` — In-memory TTL cache (Map-based, 24h default)
 - `products.ts` — Product lookup (re-exports shared config + `getProduct()`)
 - `xml-parser.ts` — XML parsing for product XML (`metaList`) and metadata XML (`metadataResponse`) using fast-xml-parser
-- `cdx.ts` — Wayback Machine CDX API timestamp resolver with fallback timestamps
+- `cdx.ts` — Wayback Machine CDX API timestamp resolver with fallback timestamps, plus `archiveFetch()` (User-Agent, one retry on 429, Cloudflare edge cache)
 - `sources.ts` — 3-source fallback fetcher: Broadcom → VMware → Wayback Machine
 
 ### Shared (`src/lib/`)
@@ -66,7 +66,7 @@ deno task test:unit -- --project server src/lib/server/cache.test.ts
 - VMware base: `https://softwareupdate.vmware.com/cds/vmw-desktop/`
 - Wayback CDX: `https://web.archive.org/cdx/search/cdx`
 - Timeouts: Broadcom/VMware 3s, Wayback 10s, CDX 5s
-- Cache TTL: 24h in-memory, 86400s HTTP Cache-Control
+- Cache TTL: 24h in-memory, 86400s HTTP Cache-Control; edge cache 30d for Wayback snapshots, 1d for CDX
 
 ## Svelte MCP Tools
 

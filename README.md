@@ -6,7 +6,7 @@ A web app that indexes VMware product downloads by fetching XML metadata from Br
 
 - **10 VMware products** — Workstation Pro, Fusion Pro, Player, Remote Console (all platforms)
 - **3-source fallback chain** — Broadcom → VMware → Wayback Machine
-- **Verbose status logging** — See which sources were tried and how long each took
+- **Verbose status logging** — See which sources were tried, how long each took, and why they failed
 - **Download links** — Wayback Machine download URLs and CDN curl commands with checksums
 - **Dark VMware-themed UI** — Tailwind CSS dark theme
 
@@ -47,6 +47,10 @@ deno task check
 # Run tests
 deno task test:unit
 
+# Lint and format
+deno task lint
+deno task format
+
 # Build for production
 deno task build
 
@@ -79,7 +83,9 @@ src/
 | VMware          | `softwareupdate.vmware.com/cds/vmw-desktop/`        | 3s      |
 | Wayback Machine | `web.archive.org/web/{timestamp}id_/`               | 10s     |
 
-The app tries each source in order. Currently, the live Broadcom/VMware servers return stripped XML (only `info-only` entries), so the Wayback Machine is the effective primary source.
+The app tries each source in order. The live servers no longer serve usable data (Broadcom is unreachable, VMware returns stripped XML or 404), so the Wayback Machine is the effective primary source.
+
+Snapshot timestamps come from the CDX API (`web.archive.org/cdx/search/cdx`, 5s timeout), with hardcoded fallbacks when it is down. archive.org rate-limits Cloudflare Workers, so requests send an identifying User-Agent, retry once on 429, and are cached at the Cloudflare edge (30 days for snapshots, 1 day for CDX lookups).
 
 ## License
 
