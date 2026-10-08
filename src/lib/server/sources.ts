@@ -1,4 +1,4 @@
-import { resolveTimestamps } from './cdx';
+import { archiveFetch, resolveTimestamps } from './cdx';
 import type { SourceAttempt } from '../types';
 
 const SOURCES = [
@@ -17,6 +17,8 @@ const SOURCES = [
 const WAYBACK_BASE = 'https://web.archive.org/web/';
 const WAYBACK_ORIGINAL_BASE = 'https://softwareupdate.vmware.com/cds/vmw-desktop/';
 const WAYBACK_TIMEOUT = 10000;
+// Snapshots are immutable.
+const WAYBACK_CACHE_TTL = 30 * 86400;
 
 export interface FetchResult {
 	data: ArrayBuffer;
@@ -59,9 +61,7 @@ export async function fetchWithFallback(
 	for (const timestamp of await resolveTimestamps(fullUrl, cdxCategory)) {
 		try {
 			const waybackUrl = `${WAYBACK_BASE}${timestamp}id_/${fullUrl}`;
-			const response = await fetch(waybackUrl, {
-				signal: AbortSignal.timeout(WAYBACK_TIMEOUT)
-			});
+			const response = await archiveFetch(waybackUrl, WAYBACK_TIMEOUT, WAYBACK_CACHE_TTL);
 			if (!response.ok) throw new Error(`HTTP ${response.status}`);
 			const data = await response.arrayBuffer();
 			if (validate && !validate(data)) throw new Error('Validation failed');

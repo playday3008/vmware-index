@@ -2,8 +2,35 @@ import * as cache from './cache';
 
 const CDX_BASE = 'https://web.archive.org/cdx/search/cdx';
 const CDX_TIMEOUT = 5000;
+const CDX_CACHE_TTL = 86400;
 const CDX_CACHE_PREFIX = 'cdx:';
 const DEFAULT_LIMIT = 5;
+
+const USER_AGENT = 'vmware-index (+https://github.com/playday3008/vmware-index)';
+const MAX_RETRY_DELAY = 2000;
+
+/**
+ * Fetch from archive.org with an identifying User-Agent and Cloudflare edge
+ * caching of successful responses. Retries once on 429, since archive.org
+ * rate-limits the shared Workers egress IPs.
+ */
+export async function archiveFetch(
+	url: string,
+	timeout: number,
+	cacheTtl: number
+): Promise<Response> {
+	const init: RequestInit = {
+		headers: { 'User-Agent': USER_AGENT },
+		cf: { cacheEverything: true, cacheTtlByStatus: { '200-299': cacheTtl } }
+	};
+	const response = await fetch(url, { ...init, signal: AbortSignal.timeout(timeout) });
+	if (response.status !== 429) return response;
+
+	const retryAfter = Number(response.headers.get('Retry-After'));
+	const delay = Number.isFinite(retryAfter) ? Math.min(retryAfter * 1000, MAX_RETRY_DELAY) : 1000;
+	await new Promise((resolve) => setTimeout(resolve, delay));
+	return fetch(url, { ...init, signal: AbortSignal.timeout(timeout) });
+}
 
 const METADATA_GZ_FALLBACK = '20240910091207';
 const PRODUCT_XML_DEFAULT_FALLBACK = '20250221215224';
@@ -52,9 +79,7 @@ export async function resolveTimestamps(
 			filter: 'statuscode:200',
 			from: '20240101'
 		});
-		const response = await fetch(`${CDX_BASE}?${params}`, {
-			signal: AbortSignal.timeout(CDX_TIMEOUT)
-		});
+		const response = await archiveFetch(`${CDX_BASE}?${params}`, CDX_TIMEOUT, CDX_CACHE_TTL);
 
 		if (!response.ok) throw new Error(`CDX API returned ${response.status}`);
 
