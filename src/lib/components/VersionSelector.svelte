@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { VersionEntry } from '$lib/types';
+	import type { VersionEntry } from '#lib/types.js';
 
 	interface Props {
 		versions: VersionEntry[];

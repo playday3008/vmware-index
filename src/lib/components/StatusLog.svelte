@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SourceAttempt } from '$lib/types';
+	import type { SourceAttempt } from '#lib/types.js';
 
 	interface LogEntry {
 		time: string;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DownloadableFile } from '$lib/types';
+	import type { DownloadableFile } from '#lib/types.js';
 	import FileCard from './FileCard.svelte';
 
 	interface Props {

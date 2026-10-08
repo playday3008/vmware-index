@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ProductConfig } from '$lib/types';
+	import type { ProductConfig } from '#lib/types.js';
 
 	interface Props {
 		products: ProductConfig[];

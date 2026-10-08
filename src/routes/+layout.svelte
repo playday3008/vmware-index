@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.css';
-	import favicon from '$lib/assets/favicon.svg';
-	import GitHubCorner from '$lib/components/GitHubCorner.svelte';
+	import favicon from '#lib/assets/favicon.svg';
+	import GitHubCorner from '#lib/components/GitHubCorner.svelte';
 
 	let { children } = $props();
 </script>

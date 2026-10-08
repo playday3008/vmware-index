@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DownloadableFile } from '$lib/types';
+	import type { DownloadableFile } from '#lib/types.js';
 
 	interface Props {
 		file: DownloadableFile;
