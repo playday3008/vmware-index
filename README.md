@@ -36,26 +36,29 @@ A web app that indexes VMware product downloads by fetching XML metadata from Br
 
 ```bash
 # Install dependencies
-deno install
+npm install
+
+# Install Playwright browsers (needed for client tests)
+npm run prepare:test
 
 # Start dev server
-deno task dev
+npm run dev
 
 # Type check
-deno task check
+npm run check
 
 # Run tests
-deno task test:unit
+npm run test:unit
 
 # Lint and format
-deno task lint
-deno task format
+npm run lint
+npm run format
 
 # Build for production
-deno task build
+npm run build
 
 # Deploy to Cloudflare Workers
-deno task deploy
+npm run deploy
 ```
 
 ## Project Structure
