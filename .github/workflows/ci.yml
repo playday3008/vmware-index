@@ -14,32 +14,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: ./.github/actions/setup-deno-env
+      - uses: ./.github/actions/setup-node-env
 
-      - run: deno install --frozen
-      - run: deno task prepare
-      - run: deno task lint
-      - run: deno task check
+      - run: npm ci
+      - run: npm run prepare
+      - run: npm run lint
+      - run: npm run check
 
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: ./.github/actions/setup-deno-env
+      - uses: ./.github/actions/setup-node-env
 
-      - run: deno install --frozen
-      - run: deno x npm:playwright install --with-deps chromium
-      - run: deno task prepare
-      - run: deno task test:unit -- --run
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run prepare
+      - run: npm run test:unit -- --run
 
 #  e2e-tests:
 #    name: E2E Tests
 #    runs-on: ubuntu-latest
 #    steps:
 #      - uses: actions/checkout@v7
-#      - uses: ./.github/actions/setup-deno-env
+#      - uses: ./.github/actions/setup-node-env
 #
-#      - run: deno install --frozen
-#      - run: deno x npm:playwright install --with-deps chromium
-#      - run: deno x npm:playwright test
+#      - run: npm ci
+#      - run: npx playwright install --with-deps chromium
+#      - run: npx playwright test
