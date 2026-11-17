@@ -1,0 +1,86 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+
+	"name": "vmware-index",
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"compatibility_date": "2026-04-29",
+	"compatibility_flags": ["nodejs_compat", "nodejs_als"],
+	"send_metrics": false,
+	"workers_dev": true,
+	"preview_urls": true,
+	// Server-side source maps, used to remap Worker stack traces in Workers Logs,
+	// real-time logs (wrangler tail), Tail Workers, and Workers Issues. Uploaded
+	// to Cloudflare only, never served as assets; browser maps on previews come
+	// from build.sourcemap in vite.config.ts instead. Wrangler uploads them by
+	// default but silently skips ones it cannot resolve; true makes a missing map
+	// fail the upload instead.
+	"upload_source_maps": true,
+
+	"routes": [
+		{
+			"custom_domain": true,
+			"pattern": "vmware-index.playday3008.dev"
+		}
+	],
+
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	},
+
+	// 100% sampling is intentional at current traffic scale.
+	// Reduce head_sampling_rate to 0.1-0.01 if traffic grows significantly.
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1,
+
+		"logs": {
+			"enabled": true,
+			"head_sampling_rate": 1,
+			"invocation_logs": true,
+			"persist": true
+		},
+
+		"traces": {
+			"enabled": true,
+			"head_sampling_rate": 1,
+			"persist": true
+		},
+
+		"issues": {
+			"enabled": true
+		}
+	},
+
+	"placement": {
+		"mode": "smart"
+	},
+
+	"previews": {
+		"observability": {
+			"enabled": true,
+			"head_sampling_rate": 1,
+
+			"logs": {
+				"enabled": true,
+				"head_sampling_rate": 1,
+				"invocation_logs": true,
+				"persist": true
+			},
+
+			"traces": {
+				"enabled": true,
+				"head_sampling_rate": 1,
+				"persist": true
+			},
+
+			"issues": {
+				"enabled": true
+			}
+		},
+
+		"placement": {
+			"mode": "smart"
+		}
+	}
+}
